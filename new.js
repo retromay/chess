@@ -3,7 +3,7 @@ let legalSquares = [];
 const boardSquares = document.getElementsByClassName("square");
 const pieces = document.getElementsByClassName("piece");
 const piecesImages = document.getElementsByTagName("img");
-
+let isWhiteTurn= true; // flag for turns 
 // This function itrates over the array of board squares while checking for events of drag over and drop.This function is also responsible for give the them the id. eg. a1 b4 etc.
 
 function setupBoardSquares() {
@@ -43,9 +43,17 @@ function allowDrop(ev) {
 
 // Drag function gets us the target of the event which is the piece elemet that is being dragged.The function also then calls the setData property on the dataTransfer property of 
 // the event object and , setting the data type as text and the data of piece id. This will allow us to transfer the data during drag and drop operation.
+// If condition will validate if its the correct turn
 function drag(ev) {
     const piece = ev.target;
-    ev.dataTransfer.setData("text", piece.id);
+    const pieceColor = piece.getAttribute("color");
+    if((isWhiteTurn && pieceColor =="white")||(!isWhiteTurn && pieceColor=="black"))
+        {ev.dataTransfer.setData("text", piece.id);}
+        
+
+    
+        
+
 }
   
 // This function will retrieve the data that was set during the dragstart event by calling the methond getData on the dataTransfer property of the event object.
@@ -58,5 +66,6 @@ function drop(ev){
     const destinationSquare = ev.currentTarget;
     let destinationSquareId = destinationSquare.id;
     destinationSquare.appendChild(piece);
+    isWhiteTurn=!isWhiteTurn;// changes the value to swap turn
 
 } 
